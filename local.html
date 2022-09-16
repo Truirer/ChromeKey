@@ -5,20 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>Trading Center</title>
-
     <script type="module" src="input.js" ></script>
+    <script type="module" src="local.js" ></script>
 
 <style>
     body{
         margin:20;
         padding: 20;
-        background: black;
     }
     *{
         box-sizing: border-box;
     }
     header{
-        position:fixed;
         display:flex;
         width:100%;
         flex-direction:column;
@@ -26,18 +24,71 @@
         align-items:flex-start;
         height:60px;
         top:0;
-        background:black;
         z-index:500;
-        border-bottom:3px solid white;
+    }
+    main{
+        height: 100%;
+        width: 100%;
+        min-height: 100vh;
+        min-width: 100vw;
+    }
+    .shortcutContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .shortcut{
+        display: flex;
+        flex-direction: row;
+    }
+    .overlay{
+        display: flex;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: rgba(45,45,45,0.5);
+        opacity: 0;
+        z-index: -1;
+    }
+    .overlayText{
+        display: flex;
+        font-size:35px;
+        width: 200px;
+        height: 100px;
+        background: white;
+        border: 2px solid black;
+        border-radius: 25px;
+        position: fixed;
+        left: calc(50% - 100px);
+        top: calc(50% - 50px);
+        justify-content: center;
+        align-items: center;
+    }
+    .shortcutDelete{
+        width: 20px;
+        height: 20px;
+        background-color: black;
+        color: white;
     }
 </style>
     </head>
     <body>
         <header>
+            <button class="adder">Add Shortcuts</button>
         </header>
-        <div class="stockWrapperContainer">
+        <div class="overlay">
+            <div class="overlayText">
+
+            </div>
         </div>
-        <div class="stockWrapperContainer">
-        </div>
+        <main>
+            <div class="shortcutContainer">
+                <div class="shortcut">
+                    <div class="shortcutKey">CTRL X</div>
+                    <input type="url" class="shortcutUrl" value="https://www.youtube.com/">
+                </div>
+            </div>
+        </main>
     </body>
 </html> 

@@ -10,7 +10,6 @@
     ],
     "persistent": true
   },
-
   "browser_action": {
     "default_title": "Chrome Key",
     "default_popup": "popup.html"
@@ -20,5 +19,15 @@
     "http://*/*",
     "tabs",
     "storage"
-  ]
+  ],
+  "content_scripts": [
+    {
+    "matches": [
+        "http://*/*",
+        "https://*/*"
+        ],
+    "js": ["program.js"],
+    "run_at": "document_end" 
+    }
+]
 }
