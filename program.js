@@ -17,7 +17,7 @@ function keyListener(controlKeyBool,keyCodeData,keyUrl){
     console.log(controlKeyBool)
     document.addEventListener("keydown", function(event){
         let keyCodeNumber = event.keyCode;
-        let controlKeyCheck = controlKeyBool == "true" ? event.ctrlKey: !event.ctrlKey;
+        let controlKeyCheck = controlKeyBool == "true" ? event.ctrlKey: !(event.ctrlKey);
         if(controlKeyCheck && keyCodeNumber == keyCodeData){
             event.preventDefault();
             chrome.runtime.sendMessage({loadURL: keyUrl});
