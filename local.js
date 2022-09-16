@@ -46,7 +46,6 @@ function keyDownListener(event){
         if(event.ctrlKey){
             controlKeyCheck = true;
         }
-        console.log(currentElement)
         document.querySelector(".overlayText").innerText = controlKeyCheck ? "CTRL "+ keyCodeName: keyCodeName;
         currentElement.innerText = controlKeyCheck ? "CTRL "+ keyCodeName: keyCodeName;
         currentElement.parentElement.dataset.jsControlKey = controlKeyCheck
@@ -66,12 +65,10 @@ function chromeSaver(){
         dataArray = result.dataArray ? result.dataArray:{} ;
         
         document.querySelectorAll(".shortcut").forEach(function(element,index){
-            console.log(index,element)
             keyIndex = index;
             dataArray[keyIndex] = [element.dataset.jsControlKey,element.dataset.jsKey,element.dataset.jsUrl,element.dataset.jsKeyName];
             
         })
-        console.log(dataArray)
         chrome.storage.local.set({dataArray: dataArray}, function () {
     
             chrome.storage.local.get('dataArray', function (result) {
@@ -84,7 +81,6 @@ function chromeSaver(){
 
 function chromePainter(){
     chrome.storage.local.get("dataArray", function (result) {
-        console.log(result.dataArray)
         document.querySelector(".shortcutContainer").innerHTML = "";
         let objLength = Object.values(result.dataArray).length;
         for(let i = 0; i< objLength; i++){
@@ -162,7 +158,6 @@ function keyRemover(indexKey){
             }
         })
         delete dataArray[dataArrayLength] 
-        console.log(dataArray)
         chrome.storage.local.set({dataArray: dataArray}, function () {
             chromePainter()
         });

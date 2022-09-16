@@ -4,7 +4,6 @@ let timeSettingStatic;
 })();
 
 function keySetup(){
-
     let keyCodeGenerator = {}
     chrome.storage.local.get("dataArray", function (result) {
         keyCodeGenerator = result.dataArray ? result.dataArray:{};
@@ -14,15 +13,12 @@ function keySetup(){
     });
 }
 
-
 function keyListener(controlKeyBool,keyCodeData,keyUrl){
     console.log(controlKeyBool)
     document.addEventListener("keydown", function(event){
         let keyCodeNumber = event.keyCode;
-        let controlKeyCheck = controlKeyBool ? event.ctrlKey: !event.ctrlKey;
+        let controlKeyCheck = controlKeyBool == "true" ? event.ctrlKey: !event.ctrlKey;
         if(controlKeyCheck && keyCodeNumber == keyCodeData){
-            console.log(controlKeyCheck,controlKeyBool)
-
             event.preventDefault();
             chrome.runtime.sendMessage({loadURL: keyUrl});
         }
