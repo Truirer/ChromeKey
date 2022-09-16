@@ -42,6 +42,7 @@ function keyDownListener(event){
         let keyCodeNumber = event.which;
         let controlKeyCheck = false;
         let shiftKeyCheck = false;
+        let altKeyCheck = false;
         let keyCodeName = event.key.toUpperCase()
         console.log(event)
         if(event.ctrlKey){
@@ -50,19 +51,24 @@ function keyDownListener(event){
         if(event.shiftKey){
             shiftKeyCheck = true;
         }
-        if(keyCodeNumber == 17 ||keyCodeNumber == 16  ){
+        if(event.altKey){
+            altKeyCheck = true;
+        }
+        if(keyCodeNumber == 17 ||keyCodeNumber == 16 || altKeyCheck == 18 ){
             keyCodeName = "";
         }
 
         currentElement.innerText = "";
         currentElement.innerHTML += controlKeyCheck ? "CONTROL  ":"";
         currentElement.innerHTML += shiftKeyCheck ? "SHIFT  ":"";
+        currentElement.innerHTML += altKeyCheck ? "ALT  ":"";
         currentElement.innerHTML += keyCodeName;
         document.querySelector(".overlayText").innerText = currentElement.innerHTML;
         currentElement.parentElement.dataset.jsControlKey = controlKeyCheck
         currentElement.parentElement.dataset.jsKey = keyCodeNumber;
         currentElement.parentElement.dataset.jsKeyName = keyCodeName;
         currentElement.parentElement.dataset.jsShiftKey = shiftKeyCheck;
+        currentElement.parentElement.dataset.jsAltKey = altKeyCheck;
 
 }
 function keyUpListener(){
@@ -79,8 +85,7 @@ function chromeSaver(){
         
         document.querySelectorAll(".shortcut").forEach(function(element,index){
             keyIndex = index;
-            dataArray[keyIndex] = [element.dataset.jsControlKey,element.dataset.jsKey,element.dataset.jsUrl,element.dataset.jsKeyName,element.dataset.jsShiftKey];
-            
+            dataArray[keyIndex] = [element.dataset.jsControlKey,element.dataset.jsKey,element.dataset.jsUrl,element.dataset.jsKeyName,element.dataset.jsShiftKey,element.dataset.jsAltKey,element.dataset.jsNewTab];
         })
         chrome.storage.local.set({dataArray: dataArray}, function () {
     
@@ -97,19 +102,24 @@ function chromePainter(){
         document.querySelector(".shortcutContainer").innerHTML = "";
         let objLength = Object.values(result.dataArray).length;
         for(let i = 0; i< objLength; i++){
+
+
             let element = Object.values(result.dataArray)[i];
             let shortcut = document.createElement("div");
             let shortcutKeyDiv = document.createElement("div");
             let shortcutUrlDiv = document.createElement("input");
             let shortcutDelete = document.createElement("button");
+            let shortcutNewTab = document.createElement("button");
 
             shortcut.className = "shortcut";
             shortcutKeyDiv.className = "shortcutKey";
             shortcutUrlDiv.className = "shortcutUrl";
             shortcutDelete.className = "shortcutDelete";
+            shortcutNewTab.className = "shortcutNewTab";
 
             shortcutKeyDiv.innerHTML = element[0] == "true" ? "CONTROL  ":"";
             shortcutKeyDiv.innerHTML += element[4] == "true" ? "SHIFT  ":"";
+            shortcutKeyDiv.innerHTML += element[5] == "true" ? "ALT  ":"";
             shortcutKeyDiv.innerHTML += element[3];
             shortcutUrlDiv.value = element[2];
             shortcutUrlDiv.type = "url";
@@ -132,7 +142,11 @@ function chromePainter(){
 
             shortcutDelete.addEventListener("click",function(){
                 keyRemover(Object.keys(result.dataArray)[i])
+            })
 
+            shortcutNewTab.addEventListener("click",function(){
+                this.parentElement.dataset.jsNewTab = !JSON.parse(this.parentElement.dataset.jsNewTab);
+                chromeSaver()
             })
 
 
@@ -141,10 +155,14 @@ function chromePainter(){
             shortcut.dataset.jsUrl = element[2];
             shortcut.dataset.jsKeyName = element[3];
             shortcut.dataset.jsShiftKey = element[4];
+            shortcut.dataset.jsAltKey = element[5];
+            shortcut.dataset.jsNewTab = element[6] ? element[6]:false;
 
             shortcut.appendChild(shortcutKeyDiv)
             shortcut.appendChild(shortcutUrlDiv)
             shortcut.appendChild(shortcutDelete)
+            shortcut.appendChild(shortcutNewTab)
+
             document.querySelector(".shortcutContainer").appendChild(shortcut);
         }
 
