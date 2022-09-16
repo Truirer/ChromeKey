@@ -35,22 +35,35 @@ function eventRemover(){
 
 }
 
+
+
 function keyDownListener(event){
         event.preventDefault();
-        let keyCodeNumber = event.keyCode;
-        let keyCodeName = event.key.toUpperCase()
+        let keyCodeNumber = event.which;
         let controlKeyCheck = false;
-        if(keyCodeNumber == 17){
-            keyCodeName = "";
-        }
+        let shiftKeyCheck = false;
+        let keyCodeName = event.key.toUpperCase()
+        console.log(event)
         if(event.ctrlKey){
             controlKeyCheck = true;
         }
-        document.querySelector(".overlayText").innerText = controlKeyCheck ? "CTRL "+ keyCodeName: keyCodeName;
-        currentElement.innerText = controlKeyCheck ? "CTRL "+ keyCodeName: keyCodeName;
+        if(event.shiftKey){
+            shiftKeyCheck = true;
+        }
+        if(keyCodeNumber == 17 ||keyCodeNumber == 16  ){
+            keyCodeName = "";
+        }
+
+        currentElement.innerText = "";
+        currentElement.innerHTML += controlKeyCheck ? "CONTROL  ":"";
+        currentElement.innerHTML += shiftKeyCheck ? "SHIFT  ":"";
+        currentElement.innerHTML += keyCodeName;
+        document.querySelector(".overlayText").innerText = currentElement.innerHTML;
         currentElement.parentElement.dataset.jsControlKey = controlKeyCheck
         currentElement.parentElement.dataset.jsKey = keyCodeNumber;
         currentElement.parentElement.dataset.jsKeyName = keyCodeName;
+        currentElement.parentElement.dataset.jsShiftKey = shiftKeyCheck;
+
 }
 function keyUpListener(){
     document.querySelector(".overlay").click();
@@ -66,7 +79,7 @@ function chromeSaver(){
         
         document.querySelectorAll(".shortcut").forEach(function(element,index){
             keyIndex = index;
-            dataArray[keyIndex] = [element.dataset.jsControlKey,element.dataset.jsKey,element.dataset.jsUrl,element.dataset.jsKeyName];
+            dataArray[keyIndex] = [element.dataset.jsControlKey,element.dataset.jsKey,element.dataset.jsUrl,element.dataset.jsKeyName,element.dataset.jsShiftKey];
             
         })
         chrome.storage.local.set({dataArray: dataArray}, function () {
@@ -95,7 +108,9 @@ function chromePainter(){
             shortcutUrlDiv.className = "shortcutUrl";
             shortcutDelete.className = "shortcutDelete";
 
-            shortcutKeyDiv.innerText = element[0] == "true" ? "CTRL "+ element[3]: element[3];
+            shortcutKeyDiv.innerHTML = element[0] == "true" ? "CONTROL  ":"";
+            shortcutKeyDiv.innerHTML += element[4] == "true" ? "SHIFT  ":"";
+            shortcutKeyDiv.innerHTML += element[3];
             shortcutUrlDiv.value = element[2];
             shortcutUrlDiv.type = "url";
             
@@ -125,6 +140,7 @@ function chromePainter(){
             shortcut.dataset.jsKey = element[1];
             shortcut.dataset.jsUrl = element[2];
             shortcut.dataset.jsKeyName = element[3];
+            shortcut.dataset.jsShiftKey = element[4];
 
             shortcut.appendChild(shortcutKeyDiv)
             shortcut.appendChild(shortcutUrlDiv)
