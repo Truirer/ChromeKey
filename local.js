@@ -123,8 +123,9 @@ function chromePainter(){
             shortcutKeyDiv.innerHTML += element[3];
             shortcutUrlDiv.value = element[2];
             shortcutUrlDiv.type = "url";
-            
-
+            shortcutDelete.innerHTML = "Delete"
+            shortcutNewTab.innerHTML = "Open in New Tab"
+            shortcutNewTab.style.background = element[6] == "false" ? "red":"green";
 
             shortcutKeyDiv.addEventListener("click",function(){
                 document.querySelector(".overlay").style.opacity="1";
@@ -146,6 +147,7 @@ function chromePainter(){
 
             shortcutNewTab.addEventListener("click",function(){
                 this.parentElement.dataset.jsNewTab = !JSON.parse(this.parentElement.dataset.jsNewTab);
+                this.style.background = this.parentElement.dataset.jsNewTab == "false" ? "red":"green";
                 chromeSaver()
             })
 
@@ -160,8 +162,8 @@ function chromePainter(){
 
             shortcut.appendChild(shortcutKeyDiv)
             shortcut.appendChild(shortcutUrlDiv)
-            shortcut.appendChild(shortcutDelete)
             shortcut.appendChild(shortcutNewTab)
+            shortcut.appendChild(shortcutDelete)
 
             document.querySelector(".shortcutContainer").appendChild(shortcut);
         }

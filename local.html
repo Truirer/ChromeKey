@@ -30,7 +30,6 @@
         height: 100%;
         width: 100%;
         min-height: 100vh;
-        min-width: 100vw;
     }
     .shortcutContainer{
         display: flex;
@@ -39,6 +38,10 @@
     .shortcut{
         display: flex;
         flex-direction: row;
+        width: 100%;
+        max-width: 1440px;
+        justify-content: space-between;
+        padding: 5px;
     }
     .overlay{
         display: flex;
@@ -66,10 +69,17 @@
         align-items: center;
     }
     .shortcutDelete{
-        width: 20px;
         height: 20px;
         background-color: black;
         color: white;
+    }
+    .shortcutKey{
+        width: 200px;
+        border: 1px solid black;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        padding: 5px;
     }
 </style>
     </head>
