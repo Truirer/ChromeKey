@@ -32,7 +32,6 @@ function localKeyListener(){
 function eventRemover(){
     document.removeEventListener("keydown", keyDownListener);
     document.removeEventListener("keyup", keyUpListener);
-
 }
 
 
